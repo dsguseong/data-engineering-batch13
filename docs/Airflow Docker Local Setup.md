@@ -26,10 +26,10 @@ Though the image itself has command to download `pipenv` to be used in the conta
 For more information on `pipenv`, please refer to this [page](https://pipenv-fork.readthedocs.io/en/latest/basics.html).
 
 ### Spinning Up Local Airflow Services
-1. data-engineering-batch12 리포를 다운로드받고 메인폴더로 이동한다. 여기 있는 dags 폴더가 결국 airflow dags 폴더가 되고 여기 있는 파이썬 파일들이 DAG로 인식된다.
+1. data-engineering-batch13 리포를 다운로드받고 메인폴더로 이동한다. 여기 있는 dags 폴더가 결국 airflow dags 폴더가 되고 여기 있는 파이썬 파일들이 DAG로 인식된다.
 ```
-git clone https://github.com/keeyong/data-engineering-batch12.git
-cd data-engineering-batch12
+git clone https://github.com/keeyong/data-engineering-batch13.git
+cd data-engineering-batch13
 ```
 2. Airflow 2.5.1에 해당하는 docker-compose.yaml을 다운로드받는다.
 ```
@@ -41,12 +41,12 @@ curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.5.1/docker-compose.y
 5. `docker ps` 명령을 실행해서 모든 프로세스가 동작하는지 확인한다.
 ```
 CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                   PORTS                    NAMES
-416c95ae400e   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch12-airflow-worker-1
-b9c06238f108   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch12-airflow-scheduler-1
-d936e07d706f   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch12-airflow-triggerer-1
-34f28c6a0935   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   0.0.0.0:8080->8080/tcp   data-engineering-batch12-airflow-webserver-1
-e2abda41736f   postgres:13            "docker-entrypoint.s…"   53 minutes ago   Up 3 minutes (healthy)   5432/tcp                 data-engineering-batch12-postgres-1
-67c5ffb14bec   redis:latest           "docker-entrypoint.s…"   53 minutes ago   Up 3 minutes (healthy)   6379/tcp                 data-engineering-batch12-redis-1
+416c95ae400e   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch13-airflow-worker-1
+b9c06238f108   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch13-airflow-scheduler-1
+d936e07d706f   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch13-airflow-triggerer-1
+34f28c6a0935   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   0.0.0.0:8080->8080/tcp   data-engineering-batch13-airflow-webserver-1
+e2abda41736f   postgres:13            "docker-entrypoint.s…"   53 minutes ago   Up 3 minutes (healthy)   5432/tcp                 data-engineering-batch13-postgres-1
+67c5ffb14bec   redis:latest           "docker-entrypoint.s…"   53 minutes ago   Up 3 minutes (healthy)   6379/tcp                 data-engineering-batch13-redis-1
 ```
 도커 프로그램에서 위의 프로세스들이 실행되고 있는지 다시 한번 확인한다
 ![docker compose up 결과 화면](./images/docker_compose_up.png)
@@ -60,14 +60,14 @@ e2abda41736f   postgres:13            "docker-entrypoint.s…"   53 minutes ago 
 ![Local Airflow Login Page](./images/airflow_dags.png)
 
 ### Airflow 컨테이너로 로그인하는 방법
-1. `docker ps`를 실행하고 data-engineering-batch12-airflow-scheduler-1의 CONTAINER ID를 추출한다. 아래 예라면 b9c06238f108에 해당한다. 
+1. `docker ps`를 실행하고 data-engineering-batch13-airflow-scheduler-1의 CONTAINER ID를 추출한다. 아래 예라면 b9c06238f108에 해당한다. 
 ```
 CONTAINER ID   IMAGE                  COMMAND                  CREATED          STATUS                   PORTS                    NAMES
-416c95ae400e   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch12-airflow-worker-1
-b9c06238f108   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch12-airflow-scheduler-1
+416c95ae400e   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch13-airflow-worker-1
+b9c06238f108   apache/airflow:2.5.1   "/usr/bin/dumb-init …"   11 minutes ago   Up 3 minutes (healthy)   8080/tcp                 data-engineering-batch13-airflow-scheduler-1
 ...
 ```
-2. Container ID("b9c06238f108")를 바탕으로 `docker exec -it b9c06238f108 sh`를 실행한다. 그러면 셀 모드로 들어갈 수 있고 거기서 airflow 명령어를 실행할 수 있다. 소스 코드 편집은 앞서 코드리포를 다운로드 받은 폴더(data-engineering-batch12) 밑의 dags 폴더를 사용하면 된다.
+2. Container ID("b9c06238f108")를 바탕으로 `docker exec -it b9c06238f108 sh`를 실행한다. 그러면 셀 모드로 들어갈 수 있고 거기서 airflow 명령어를 실행할 수 있다. 소스 코드 편집은 앞서 코드리포를 다운로드 받은 폴더(data-engineering-batch13) 밑의 dags 폴더를 사용하면 된다.
 ```
 % docker exec -it b9c06238f108 sh
 (airflow)airflow tasks list HelloWorld
