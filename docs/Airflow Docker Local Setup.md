@@ -87,35 +87,3 @@ sudo apt-get install default-libmysqlclient-dev build-essential
 ```
 pip install mysqlclient
 ```
-
-### Shutting Down Local Airflow Services
-1. `ctrl+c`
-![control-c](./images/docker_ctrl_c.png)
-2. Run `docker compose down`
-![docker-compose down](./images/docker_compose_down.png)
-
-### Volumes
-Since the `docker-compose.yaml` file takes care of mounting the `./dags` folder for us. You can start developing your code and create DAGs in the `./dag` folder the same way we used to do on the Airflow server. Anything you changes there should be reflected in the container locally running Airflow.
-
-### Cleanup
-It's recommended that you clean up dangling Docker images resulted from multiple build versions from time to time to free up space on your machine. To do this please run: `docker system prune`
-
-When prompted:
-```
-WARNING! This will remove:
-  - all stopped containers
-  - all networks not used by at least one container
-  - all dangling images
-  - all dangling build cache
-
-Are you sure you want to continue? [y/N]
-```
-please answer: `y` then hit `enter` key
-
-### Advance Usage
-#### Adding Packages
-1. Add package to `requirements.txt`
-2. Run `pipenv install -r requirements.txt`
-3. To spin up Airflow with new changes, run `docker-compose up --build`
-
-Note: Installing from `requirements.txt` via `pipenv` only appends packages to the `Pipfile` file. The installation does NOT remove packaged already in `Pipfile` that are not in the `requirements.txt` file
