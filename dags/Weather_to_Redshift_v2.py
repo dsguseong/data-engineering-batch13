@@ -46,7 +46,8 @@ def etl(schema, table, lat, lon, api_key):
     logging.info(create_table_sql)
 
     # 임시 테이블 생성
-    create_t_sql = f"""CREATE TEMP TABLE t AS SELECT * FROM {schema}.{table};"""
+    create_t_sql = f"""CREATE TEMP TABLE t (LIKE {schema}.{table} INCLUDING DEFAULTS);
+    INSERT INTO t SELECT * FROM {schema}.{table};"""
     logging.info(create_t_sql)
     try:
         cur.execute(create_table_sql)
